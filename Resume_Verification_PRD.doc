@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Resume Verification and Dynamic CV Builder - Detailed Product Document</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.4; }
+  h1, h2, h3 { color: #1f2937; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; }
+  th, td { border: 1px solid #999; padding: 6px; text-align: left; }
+  .wf { font-family: Consolas, monospace; white-space: pre; border: 1px solid #ddd; padding: 8px; background:#fafafa; }
+</style>
+</head>
+<body>
+<h1>Resume Verification &amp; Dynamic CV Builder</h1>
+<h2>Detailed Product Requirements Document (PRD)</h2>
+<p><b>Version:</b> 1.0<br/>
+<b>Date:</b> 21 April 2026<br/>
+<b>Prepared for:</b> Program Team / Placement Operations</p>
+
+<h2>1. Product Overview</h2>
+<p>This product enables students to submit resume points with proof, allows the program team to verify and govern claim quality, detects risky semantic edits, and generates role-specific CVs from approved content.</p>
+
+<h3>1.1 Primary Goals</h3>
+<ul>
+  <li>Asynchronous submission and verification workflow</li>
+  <li>Dynamic CV generation from verified points</li>
+  <li>Risk assessment for semantic/contextual misrepresentation</li>
+  <li>Deadline enforcement for submission and edit control</li>
+</ul>
+
+<h2>2. Roles and Permissions</h2>
+<table>
+  <tr><th>Role</th><th>Capabilities</th></tr>
+  <tr><td>Student</td><td>Create/edit points, upload proofs, submit/re-submit, build CV variants from approved points, download PDF.</td></tr>
+  <tr><td>Program Team</td><td>Search students, review points, approve/flag/reject, set deadlines, monitor risk, export reports.</td></tr>
+  <tr><td>Admin (optional)</td><td>Manage templates, categories, system configuration, role policies, and analytics exports.</td></tr>
+</table>
+
+<h2>3. End-to-End Workflow</h2>
+<p><b>Point lifecycle:</b> Draft -&gt; Submitted -&gt; Under Review -&gt; Approved / Flagged / Rejected -&gt; Revised -&gt; Final Approved</p>
+<ol>
+  <li>Student adds point and proof(s).</li>
+  <li>Student submits point for verification.</li>
+  <li>Risk engine computes score and explanation.</li>
+  <li>Program team reviews and decides.</li>
+  <li>Student receives comments and revises (if allowed).</li>
+  <li>Approved points become available in CV builder.</li>
+</ol>
+
+<h2>4. Feature Specification</h2>
+<h3>4.1 Student Module</h3>
+<ul>
+  <li>Dashboard with status counts, deadlines, recent feedback.</li>
+  <li>Point repository with categories and filters.</li>
+  <li>Proof upload (PDF/JPG/PNG/DOCX + links).</li>
+  <li>Revision history and reviewer comments.</li>
+  <li>CV builder with templates, point selection, ordering, PDF export.</li>
+</ul>
+
+<h3>4.2 Program Team Module</h3>
+<ul>
+  <li>Main dashboard shows all students in a batch with search and filters.</li>
+  <li>Click student to open full profile and status analytics.</li>
+  <li>Tabs for all pointers: Pending, Approved, Rejected, Red Flagged.</li>
+  <li>Point-level review with proof panel and AI risk reason.</li>
+  <li>Deadline manager (submission, edit cutoff, final verification).</li>
+</ul>
+
+<h2>5. Wireframes (Low Fidelity)</h2>
+<h3>5.1 Program Team Main Dashboard</h3>
+<div class="wf">+--------------------------------------------------------------------------------------------------+
+| Program Team Dashboard - Batch B2026                                           [Profile ▼]      |
++--------------------------------------------------------------------------------------------------+
+| Search: [🔍 Search student by name/email/id __________________________] [Filter ▼]              |
+| Filters: [All] [Pending &gt; 0] [Red Flagged] [No Submission] [Sort: Pending High→Low]            |
++--------------------------------------------------------------------------------------------------+
+| Student Name        | Pending | Approved | Rejected | Red Flagged | Last Update | Open Profile  |
+|---------------------|---------|----------|----------|-------------|-------------|---------------|
+| Ananya Sharma       |   3     |   12     |   1      |     2       | 21 Apr      | [Open]        |
+| Ravi Kumar          |   0     |   15     |   0      |     0       | 20 Apr      | [Open]        |
+| Priya Mehta         |   5     |    8     |   2      |     1       | 21 Apr      | [Open]        |
++--------------------------------------------------------------------------------------------------+</div>
+
+<h3>5.2 Program Team Student Profile</h3>
+<div class="wf">+--------------------------------------------------------------------------------------------------+
+| ← Back                                Student Profile: Ananya Sharma                             |
++--------------------------------------------------------------------------------------------------+
+| Summary Cards: [Total 18] [Pending 3] [Approved 12] [Rejected 1] [Flagged 2]                   |
++--------------------------------------------------------------------------------------------------+
+| Tabs: [All Pointers] [Pending] [Approved] [Rejected] [Red Flagged]                              |
++--------------------------------------------------------------------------------------------------+
+| Title                         | Category    | Status      | Risk   | Submitted | Action         |
+|------------------------------|-------------|-------------|--------|----------|-----------------|
+| Managed 4-person team        | Leadership  | Red Flagged | High   | 19 Apr   | Review          |
+| Increased conversion by 12%  | Sales       | Approved    | Low    | 17 Apr   | View            |
+| Built campaign tracker       | Tech        | Pending     | Medium | 21 Apr   | Review          |
++--------------------------------------------------------------------------------------------------+</div>
+
+<h3>5.3 Student CV Builder</h3>
+<div class="wf">+----------------------------------------------------------------------------------+
+| CV Builder                                         [Save Variant] [Download PDF] |
++----------------------------------------------------------------------------------+
+| Template: [ATS Modern ▼]  Variant Name: [Data Analyst CV_________]               |
++----------------------------------------------------------------------------------+
+| Approved Points (select)                | Preview                                |
+| [x] Built dashboard                     | Name / Contact                          |
+| [x] Improved conversion 12%             | Summary                                 |
+| [ ] Managed outreach                    | Experience bullets                      |
+| Drag to reorder selected points         | Skills / Projects                       |
++----------------------------------------------------------------------------------+</div>
+
+<h2>6. Risk Assessment Logic</h2>
+<h3>6.1 Objective</h3>
+<p>Identify whether a submitted or edited point changes factual meaning, role level, scope, or impact beyond verified evidence.</p>
+
+<h3>6.2 Scoring Model (0-100)</h3>
+<table>
+  <tr><th>Signal</th><th>Example</th><th>Score Impact</th></tr>
+  <tr><td>Responsibility escalation</td><td>"assisted" → "led"</td><td>+30 to +45</td></tr>
+  <tr><td>Scope inflation</td><td>"module" → "platform"</td><td>+20 to +35</td></tr>
+  <tr><td>Metric inflation</td><td>New % added without proof</td><td>+25 to +40</td></tr>
+  <tr><td>Semantic drift</td><td>Low similarity with original point</td><td>+20 to +35</td></tr>
+  <tr><td>Proof mismatch</td><td>Strong claim, weak evidence</td><td>+20 to +25</td></tr>
+</table>
+<p><b>Risk bands:</b> Low (0-29), Medium (30-64), High (65+)</p>
+
+<h3>6.3 Hard Flag Conditions</h3>
+<ul>
+  <li>Contributor-to-owner claim change without evidence</li>
+  <li>Quantitative claim added without traceable proof</li>
+  <li>Team leadership claim appears newly without historical support</li>
+</ul>
+
+<h2>7. API Outline</h2>
+<ul>
+  <li>POST /api/points</li>
+  <li>PATCH /api/points/:id</li>
+  <li>POST /api/points/:id/submit</li>
+  <li>GET /api/batches/:id/students-summary</li>
+  <li>GET /api/students/:id/profile</li>
+  <li>POST /api/verification/:pointId/approve</li>
+  <li>POST /api/verification/:pointId/flag</li>
+  <li>POST /api/verification/:pointId/reject</li>
+  <li>POST /api/cv-builder/generate</li>
+  <li>POST /api/deadlines</li>
+</ul>
+
+<h2>8. Data Model (Conceptual)</h2>
+<ul>
+  <li>Students, Batches, Points, PointVersions, Proofs</li>
+  <li>Verifications, Comments, Deadlines</li>
+  <li>CVVariants, Templates, AuditLogs</li>
+</ul>
+
+<h2>9. Deadline Rules</h2>
+<ul>
+  <li>After submission deadline: no new submissions.</li>
+  <li>After edit cutoff: no student edits/resubmissions.</li>
+  <li>After final verification deadline: reviewer actions restricted (policy-based).</li>
+</ul>
+
+<h2>10. MVP Delivery Plan (8 Weeks)</h2>
+<table>
+  <tr><th>Week</th><th>Focus</th></tr>
+  <tr><td>1-2</td><td>Authentication, roles, base data models</td></tr>
+  <tr><td>3-4</td><td>Point CRUD, proof uploads, submission flow</td></tr>
+  <tr><td>5-6</td><td>Verification queue, risk engine v1, comments</td></tr>
+  <tr><td>7</td><td>CV builder, templates, PDF generation</td></tr>
+  <tr><td>8</td><td>QA, deadline policies, reporting and hardening</td></tr>
+</table>
+
+<h2>11. Acceptance Criteria (Key)</h2>
+<ol>
+  <li>Program team can search and open any student profile from dashboard.</li>
+  <li>Each profile shows pending/approved/rejected/red-flagged counts.</li>
+  <li>Reviewers can approve/flag/reject with comments.</li>
+  <li>Risk engine returns score + explanation for each submitted point.</li>
+  <li>Students can generate PDF CVs from approved points only.</li>
+  <li>Editing and submission lock correctly after deadlines.</li>
+</ol>
+
+<p><b>End of Document</b></p>
+</body>
+</html>
